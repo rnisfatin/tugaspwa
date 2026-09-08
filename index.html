@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Inventaris Ruangan</title>
+
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+    <meta name="description" content="Aplikasi PWA untuk mengelola inventaris ruangan">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ================= SPLASH SCREEN ================= -->
+
+<div id="splashScreen" class="splash-screen">
+
+    <div class="splash-box">
+
+        <div class="splash-logo">
+            📦
+        </div>
+
+        <h1>Inventaris Ruangan</h1>
+
+        <p>Sistem Pengelolaan Inventaris</p>
+
+        <div class="loader"></div>
+
+        <small>
+            Dibuat oleh: Nikita Ardheka N. &amp; Nisfatin Rahayu
+        </small>
+
+    </div>
+
+</div>
+
+
+<!-- ================= APLIKASI ================= -->
+
+<div id="app" class="app hidden">
+
+    <!-- HEADER -->
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                📦
+            </div>
+
+            <div>
+                <h1>Inventaris Ruangan</h1>
+                <span>Manajemen inventaris sederhana</span>
+            </div>
+
+        </div>
+
+        <button
+            type="button"
+            id="darkModeBtn"
+            class="icon-button"
+            title="Dark Mode"
+        >
+            🌙
+        </button>
+
+    </header>
+
+
+    <main class="container">
+
+        <!-- DASHBOARD -->
+
+        <section class="welcome">
+
+            <div>
+                <h2>Dashboard Inventaris</h2>
+
+                <p>
+                    Kelola seluruh data barang dalam satu aplikasi.
+                </p>
+            </div>
+
+        </section>
+
+
+        <!-- STATISTIK UTAMA -->
+
+        <section class="stats-grid">
+
+            <div class="stat-card blue">
+
+                <div class="stat-icon">📦</div>
+
+                <div>
+                    <span>Total Barang</span>
+                    <strong id="totalBarang">0</strong>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card green">
+
+                <div class="stat-icon">✅</div>
+
+                <div>
+                    <span>Kondisi Baik</span>
+                    <strong id="barangBaik">0</strong>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card orange">
+
+                <div class="stat-icon">⚠️</div>
+
+                <div>
+                    <span>Rusak Ringan</span>
+                    <strong id="barangRusakRingan">0</strong>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card red">
+
+                <div class="stat-icon">❌</div>
+
+                <div>
+                    <span>Rusak Berat</span>
+                    <strong id="barangRusakBerat">0</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FORM -->
+
+        <section class="panel">
+
+            <div class="panel-title">
+
+                <div>
+                    <h2 id="formTitle">
+                        Tambah Inventaris
+                    </h2>
+
+                    <p>
+                        Tambahkan barang baru ke dalam sistem.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <form id="inventoryForm">
+
+                <input
+                    type="hidden"
+                    id="editId"
+                >
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="namaBarang">
+                            Nama Barang
+                        </label>
+
+                        <input
+                            type="text"
+                            id="namaBarang"
+                            placeholder="Contoh: Komputer"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="kodeInventaris">
+                            Kode Inventaris
+                        </label>
+
+                        <input
+                            type="text"
+                            id="kodeInventaris"
+                            placeholder="Contoh: INV-001"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="namaRuangan">
+                            Nama Ruangan
+                        </label>
+
+                        <input
+                            type="text"
+                            id="namaRuangan"
+                            placeholder="Contoh: Lab Komputer"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="jumlahBarang">
+                            Jumlah Barang
+                        </label>
+
+                        <input
+                            type="number"
+                            id="jumlahBarang"
+                            min="1"
+                            placeholder="Contoh: 10"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label for="kondisiBarang">
+                            Kondisi Barang
+                        </label>
+
+                        <select
+                            id="kondisiBarang"
+                            required
+                        >
+
+                            <option value="Baik">
+                                Baik
+                            </option>
+
+                            <option value="Rusak Ringan">
+                                Rusak Ringan
+                            </option>
+
+                            <option value="Rusak Berat">
+                                Rusak Berat
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-buttons">
+
+                    <button
+                        type="submit"
+                        id="submitButton"
+                        class="btn primary"
+                    >
+                        ➕ Simpan Data
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="cancelButton"
+                        class="btn secondary hidden"
+                    >
+                        ✖ Batal
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- FILTER -->
+
+        <section class="panel">
+
+            <div class="panel-title">
+
+                <div>
+                    <h2>📋 Daftar Inventaris</h2>
+
+                    <p>
+                        Cari dan filter data inventaris.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="filter-grid">
+
+                <div class="form-group">
+
+                    <label for="searchInput">
+                        🔍 Pencarian
+                    </label>
+
+                    <input
+                        type="search"
+                        id="searchInput"
+                        placeholder="Nama barang atau kode..."
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="roomFilter">
+                        🏢 Filter Ruangan
+                    </label>
+
+                    <select id="roomFilter">
+
+                        <option value="all">
+                            Semua Ruangan
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="conditionFilter">
+                        🔧 Filter Kondisi
+                    </label>
+
+                    <select id="conditionFilter">
+
+                        <option value="all">
+                            Semua Kondisi
+                        </option>
+
+                        <option value="Baik">
+                            Baik
+                        </option>
+
+                        <option value="Rusak Ringan">
+                            Rusak Ringan
+                        </option>
+
+                        <option value="Rusak Berat">
+                            Rusak Berat
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="inventoryList"
+                class="inventory-list"
+            ></div>
+
+        </section>
+
+
+        <!-- STATISTIK -->
+
+        <section class="panel">
+
+            <div class="panel-title">
+
+                <div>
+                    <h2>📊 Statistik Inventaris</h2>
+
+                    <p>
+                        Ringkasan kondisi dan jumlah barang.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="statistics-grid">
+
+                <!-- KONDISI -->
+
+                <div class="statistic-card">
+
+                    <h3>📦 Kondisi Barang</h3>
+
+                    <div class="chart-container">
+
+                        <div class="bar-item">
+
+                            <div class="bar-label">
+                                <span>🟢 Baik</span>
+                                <strong id="statBaik">0</strong>
+                            </div>
+
+                            <div class="bar-background">
+
+                                <div
+                                    id="barBaik"
+                                    class="bar bar-good"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="bar-item">
+
+                            <div class="bar-label">
+                                <span>🟡 Rusak Ringan</span>
+                                <strong id="statRusakRingan">0</strong>
+                            </div>
+
+                            <div class="bar-background">
+
+                                <div
+                                    id="barRusakRingan"
+                                    class="bar bar-warning"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="bar-item">
+
+                            <div class="bar-label">
+                                <span>🔴 Rusak Berat</span>
+                                <strong id="statRusakBerat">0</strong>
+                            </div>
+
+                            <div class="bar-background">
+
+                                <div
+                                    id="barRusakBerat"
+                                    class="bar bar-danger"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RUANGAN -->
+
+                <div class="statistic-card">
+
+                    <h3>🏢 Jumlah Barang per Ruangan</h3>
+
+                    <div
+                        id="roomStatistics"
+                        class="room-statistics"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- PERLU PERHATIAN -->
+
+            <div
+                id="attentionCard"
+                class="attention-card"
+            >
+
+                <div class="attention-icon">
+                    ⚠️
+                </div>
+
+                <div class="attention-content">
+
+                    <h3>Perlu Perhatian</h3>
+
+                    <p id="attentionText">
+                        Tidak ada barang yang perlu diperhatikan.
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    id="attentionButton"
+                    class="btn warning"
+                >
+                    Lihat Barang
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- KELOLA DATA -->
+
+        <section class="panel">
+
+            <div class="panel-title">
+
+                <div>
+
+                    <h2>🗂️ Kelola Data</h2>
+
+                    <p>
+                        Export, import, backup, dan restore data.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="tools-grid">
+
+                <button
+                    type="button"
+                    id="exportBtn"
+                    class="tool-button blue-tool"
+                >
+                    📤 Export Data
+                </button>
+
+
+                <button
+                    type="button"
+                    id="importBtn"
+                    class="tool-button green-tool"
+                >
+                    📥 Import Data
+                </button>
+
+
+                <button
+                    type="button"
+                    id="backupBtn"
+                    class="tool-button purple-tool"
+                >
+                    💾 Backup LocalStorage
+                </button>
+
+
+                <button
+                    type="button"
+                    id="restoreBtn"
+                    class="tool-button orange-tool"
+                >
+                    ♻️ Restore LocalStorage
+                </button>
+
+            </div>
+
+
+            <input
+                type="file"
+                id="importFile"
+                accept=".json"
+                hidden
+            >
+
+
+            <input
+                type="file"
+                id="restoreFile"
+                accept=".json"
+                hidden
+            >
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <<footer class="footer">
+
+        <p>
+            © 2026 Inventaris Ruangan
+        </p>
+    
+        <span>
+            Data tersimpan di LocalStorage
+        </span>
+    
+    </footer>
+    
+    <!-- KONTAK ADMIN -->
+    <div class="admin-contact">
+        <strong>👤 Kontak Admin</strong>
+        <p>Nikita Ardheka N.</p>
+        <p>Nisfatin Rahayu.</p>
+        <p>📞 0895-4198-96600 (Nikita)</p>
+        <p>📞 0896-8705-1712 (Nisfatin)</p>
+        <p>
+            
+            <p>
+                ✉️
+                <a
+                    href="https://mail.google.com/mail/?view=cm&fs=1&to=nezzarita681@gmail.com"
+                    target="_blank"
+                >
+                    nezzarita681@gmail.com
+                </a>
+            </p>
+            
+        </p>
+    </div>
+    
+    </div>
+    
+    <script src="script.js"></script>
+    
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
